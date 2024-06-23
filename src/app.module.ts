@@ -6,6 +6,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { SecretsManagerModule } from './secrets-manager/secrets-manager.module';
 import { SecretsManagerService } from './secrets-manager/secrets-manager.service';
 import { DatabaseCredentials } from './secrets-manager/secret-value-interfaces/database-credentials.interface';
+import { PostsModule } from './posts/posts.module';
 
 
 @Module({
@@ -30,6 +31,7 @@ import { DatabaseCredentials } from './secrets-manager/secret-value-interfaces/d
         };
       },
     }),
+    PostsModule,
   ],
   controllers: [AppController],
   providers: [AppService],
