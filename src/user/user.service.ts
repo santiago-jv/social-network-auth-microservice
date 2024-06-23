@@ -19,7 +19,5 @@ export class UserService {
   async create(user: DeepPartial<User>): Promise<User> {
     const userEntity = this.userRepository.create(user);
     return this.userRepository.save(userEntity);
-
-
   }
 }

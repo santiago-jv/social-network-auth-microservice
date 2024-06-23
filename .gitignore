@@ -14,8 +14,8 @@ lerna-debug.log*
 
 # OS
 .DS_Store
-private.key
-public.key
+private_key.pem
+public_key.pem
 var_env.sh
 # Tests
 /coverage
