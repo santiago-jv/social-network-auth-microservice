@@ -11,17 +11,23 @@ export class SecretsManagerService {
 
   constructor() {
     this.region = 'us-east-2';
-    this.client = new SecretsManagerClient({ region: this.region });
+    this.client = new SecretsManagerClient({
+      region: this.region,
+      credentials: {
+        accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+        secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+      },
+    });
   }
 
   async getSecretValue(secretName: string): Promise<object> {
     try {
-      const secretKey = `${process.env.NODE_ENV}/${process.env.MICROSERVICE_NAME}/${secretName}`
+      const secretKey = `${process.env.NODE_ENV}/${process.env.MICROSERVICE_NAME}/${secretName}`;
 
       const command = new GetSecretValueCommand({ SecretId: secretKey });
 
       const data = await this.client.send(command);
-  
+
       if (!data.SecretString) {
         throw new Error('El secreto no es una cadena');
       }
