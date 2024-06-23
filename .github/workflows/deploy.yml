@@ -1,0 +1,51 @@
+name: Backend CI/CD
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20.12.2"
+
+      - name: Install dependencies
+        run: |
+          npm install
+
+      - name: Create private key file
+        env:
+          PRIVATE_KEY: ${{ secrets.PRIVATE_KEY }}
+        run: echo "$PRIVATE_KEY" > private_key.pem
+
+      - name: Create public key file
+        env:
+          PUBLIC_KEY: ${{ secrets.PUBLIC_KEY }}
+        run: echo "$PUBLIC_KEY" > public_key.pem
+
+      - name: Generate build
+        run: |
+          npm run build
+          
+      - name: Generate deployment package
+        run: zip -r deploy.zip . 
+
+      - name:  Elastic Beanstalk Deployment
+        uses: davecarlson/beanstalk-deploy@v23
+        with:
+          aws_access_key: ${{ secrets.AWS_ACCESS_KEY }}
+          aws_secret_key: ${{ secrets.AWS_SECRET_KEY }}
+          application_name: social-network-auth-api
+          environment_name: Social-network-auth-api-dev
+          version_label:  ${{ github.sha }}
+          region: us-east-2
+          deployment_package: deploy.zip
