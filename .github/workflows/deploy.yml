@@ -45,7 +45,7 @@ jobs:
           aws_access_key: ${{ secrets.AWS_ACCESS_KEY }}
           aws_secret_key: ${{ secrets.AWS_SECRET_KEY }}
           application_name: social-network-auth-api
-          environment_name: Social-network-auth-api-dev
+          environment_name: social-network-auth-development
           version_label:  ${{ github.sha }}
           region: us-east-2
           deployment_package: deploy.zip
